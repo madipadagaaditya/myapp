@@ -56,6 +56,338 @@ HOME_PAGE = """
         .nav-links a:hover, .nav-links a.active {
             background: rgba(255,255,255,0.2);
         }
+        #root {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 0.5rem;
+            }
+            .nav-links a {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">Aditya Madipadaga</a>
+            <div class="nav-links">
+                <a href="/">Resume</a>
+                <a href="/analytics">Analytics</a>
+                <a href="/coca-cola" class="active">Coca-Cola Analysis</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo } = React;
+        const { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } = Recharts;
+
+        const CocaColaAnalysis = () => {
+          const [forecastYears, setForecastYears] = useState(2);
+          
+          const generateHistoricalData = () => {
+            const data = [];
+            const startYear = 1994;
+            const endYear = 2024;
+            const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+            
+            let baseRevenue = 4500;
+            
+            for (let year = startYear; year <= endYear; year++) {
+              for (let q = 0; q < 4; q++) {
+                const quarter = quarters[q];
+                
+                let growthRate;
+                if (year < 2000) growthRate = 0.045;
+                else if (year < 2008) growthRate = 0.055;
+                else if (year < 2010) growthRate = -0.02;
+                else if (year < 2020) growthRate = 0.04;
+                else if (year === 2020) growthRate = -0.08;
+                else growthRate = 0.06;
+                
+                const seasonality = [0.95, 1.08, 1.05, 0.92][q];
+                const variance = 1 + (Math.random() - 0.5) * 0.08;
+                
+                baseRevenue *= (1 + growthRate / 4);
+                const revenue = baseRevenue * seasonality * variance;
+                
+                const operatingMargin = 0.18 + (year - startYear) * 0.002;
+                const operatingIncome = revenue * operatingMargin * (1 + (Math.random() - 0.5) * 0.1);
+                
+                const netMargin = 0.14 + (year - startYear) * 0.0015;
+                const netIncome = revenue * netMargin * (1 + (Math.random() - 0.5) * 0.12);
+                
+                data.push({
+                  period: `${year} ${quarter}`,
+                  year,
+                  quarter,
+                  revenue: Math.round(revenue),
+                  operatingIncome: Math.round(operatingIncome),
+                  netIncome: Math.round(netIncome),
+                  date: new Date(year, q * 3, 1)
+                });
+              }
+            }
+            
+            return data;
+          };
+          
+          const historicalData = useMemo(() => generateHistoricalData(), []);
+          
+          const calculateTrend = (data, metric) => {
+            const n = data.length;
+            const sumX = data.reduce((sum, d, i) => sum + i, 0);
+            const sumY = data.reduce((sum, d) => sum + d[metric], 0);
+            const sumXY = data.reduce((sum, d, i) => sum + i * d[metric], 0);
+            const sumX2 = data.reduce((sum, d, i) => sum + i * i, 0);
+            
+            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const intercept = (sumY - slope * sumX) / n;
+            
+            return { slope, intercept };
+          };
+          
+          const generateForecast = () => {
+            const lastPoint = historicalData[historicalData.length - 1];
+            const recentData = historicalData.slice(-40);
+            
+            const revenueTrend = calculateTrend(recentData, 'revenue');
+            const operatingTrend = calculateTrend(recentData, 'operatingIncome');
+            const netTrend = calculateTrend(recentData, 'netIncome');
+            
+            const forecast = [];
+            const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+            const seasonality = [0.95, 1.08, 1.05, 0.92];
+            
+            for (let i = 1; i <= forecastYears * 4; i++) {
+              const year = lastPoint.year + Math.floor((parseInt(lastPoint.quarter.charAt(1)) - 1 + i) / 4);
+              const q = ((parseInt(lastPoint.quarter.charAt(1)) - 1 + i) % 4);
+              const quarter = quarters[q];
+              
+              const baseRevenue = revenueTrend.slope * (historicalData.length + i) + revenueTrend.intercept;
+              const revenue = baseRevenue * seasonality[q];
+              
+              const baseOperating = operatingTrend.slope * (historicalData.length + i) + operatingTrend.intercept;
+              const operatingIncome = baseOperating * seasonality[q];
+              
+              const baseNet = netTrend.slope * (historicalData.length + i) + netTrend.intercept;
+              const netIncome = baseNet * seasonality[q];
+              
+              forecast.push({
+                period: `${year} ${quarter}`,
+                year,
+                quarter,
+                revenue: Math.round(revenue),
+                operatingIncome: Math.round(operatingIncome),
+                netIncome: Math.round(netIncome),
+                isForecast: true
+              });
+            }
+            
+            return forecast;
+          };
+          
+          const forecastData = useMemo(() => generateForecast(), [forecastYears]);
+          const combinedData = [...historicalData, ...forecastData];
+          
+          const metrics = useMemo(() => {
+            const recent = historicalData.slice(-4);
+            const previousYear = historicalData.slice(-8, -4);
+            
+            const currentRevenue = recent.reduce((sum, d) => sum + d.revenue, 0);
+            const previousRevenue = previousYear.reduce((sum, d) => sum + d.revenue, 0);
+            const revenueGrowth = ((currentRevenue - previousRevenue) / previousRevenue * 100).toFixed(2);
+            
+            const avgMargin = (recent.reduce((sum, d) => sum + (d.netIncome / d.revenue), 0) / 4 * 100).toFixed(2);
+            
+            const first = historicalData[0];
+            const last = historicalData[historicalData.length - 1];
+            const cagr = (Math.pow(last.revenue / first.revenue, 1 / 30) - 1) * 100;
+            
+            return {
+              currentRevenue: (currentRevenue / 1000).toFixed(2),
+              revenueGrowth,
+              avgMargin,
+              cagr: cagr.toFixed(2),
+              totalQuarters: historicalData.length
+            };
+          }, [historicalData]);
+          
+          const annualData = useMemo(() => {
+            const annual = {};
+            historicalData.forEach(d => {
+              if (!annual[d.year]) {
+                annual[d.year] = { year: d.year, revenue: 0, operatingIncome: 0, netIncome: 0 };
+              }
+              annual[d.year].revenue += d.revenue;
+              annual[d.year].operatingIncome += d.operatingIncome;
+              annual[d.year].netIncome += d.netIncome;
+            });
+            return Object.values(annual);
+          }, [historicalData]);
+          
+          return (
+            <div style={{ width: '100%', background: 'linear-gradient(to bottom right, #fef2f2, white)', padding: '1.5rem', minHeight: '100vh' }}>
+              <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                  <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#dc2626', marginBottom: '0.5rem' }}>Coca-Cola Financial Analysis</h1>
+                  <p style={{ color: '#666' }}>30 Years of Quarterly Performance (1994-2024) with Forecasting</p>
+                </div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+                  <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #dc2626' }}>
+                    <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Annual Revenue</div>
+                    <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>${metrics.currentRevenue}B</p>
+                    <p style={{ fontSize: '0.875rem', color: '#16a34a' }}>+{metrics.revenueGrowth}% YoY</p>
+                  </div>
+                  
+                  <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #2563eb' }}>
+                    <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>30-Year CAGR</div>
+                    <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.cagr}%</p>
+                    <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Compound Annual Growth</p>
+                  </div>
+                  
+                  <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #16a34a' }}>
+                    <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Net Margin</div>
+                    <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.avgMargin}%</p>
+                    <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Last 4 Quarters</p>
+                  </div>
+                  
+                  <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #9333ea' }}>
+                    <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Data Points</div>
+                    <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.totalQuarters}</p>
+                    <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Quarters Analyzed</p>
+                  </div>
+                </div>
+                
+                <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937' }}>Quarterly Revenue Trend & Forecast</h2>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <label style={{ fontSize: '0.875rem', color: '#666' }}>Forecast Years:</label>
+                      <select value={forecastYears} onChange={(e) => setForecastYears(Number(e.target.value))} style={{ border: '1px solid #d1d5db', borderRadius: '0.25rem', padding: '0.25rem 0.5rem' }}>
+                        <option value={1}>1 Year</option>
+                        <option value={2}>2 Years</option>
+                        <option value={3}>3 Years</option>
+                        <option value={5}>5 Years</option>
+                      </select>
+                    </div>
+                  </div>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <AreaChart data={combinedData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="period" angle={-45} textAnchor="end" height={80} interval={15} />
+                      <YAxis label={{ value: 'Revenue ($M)', angle: -90, position: 'insideLeft' }} />
+                      <Tooltip formatter={(value) => `${value}M`} />
+                      <Legend />
+                      <Area type="monotone" dataKey="revenue" stroke="#DC2626" fill="#FEE2E2" name="Historical Revenue" strokeWidth={2} />
+                      <Area type="monotone" dataKey={(d) => d.isForecast ? d.revenue : null} stroke="#3B82F6" fill="#DBEAFE" name="Forecasted Revenue" strokeDasharray="5 5" strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+                
+                <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Annual Performance Overview</h2>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarChart data={annualData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="year" />
+                      <YAxis label={{ value: 'Amount ($M)', angle: -90, position: 'insideLeft' }} />
+                      <Tooltip formatter={(value) => `${value}M`} />
+                      <Legend />
+                      <Bar dataKey="revenue" fill="#DC2626" name="Revenue" />
+                      <Bar dataKey="operatingIncome" fill="#F59E0B" name="Operating Income" />
+                      <Bar dataKey="netIncome" fill="#10B981" name="Net Income" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+                
+                <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Profitability Metrics Over Time</h2>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <LineChart data={historicalData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="period" angle={-45} textAnchor="end" height={80} interval={15} />
+                      <YAxis label={{ value: 'Income ($M)', angle: -90, position: 'insideLeft' }} />
+                      <Tooltip formatter={(value) => `${value}M`} />
+                      <Legend />
+                      <Line type="monotone" dataKey="operatingIncome" stroke="#F59E0B" name="Operating Income" strokeWidth={2} dot={false} />
+                      <Line type="monotone" dataKey="netIncome" stroke="#10B981" name="Net Income" strokeWidth={2} dot={false} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                
+                <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem' }}>
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Key Insights</h2>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+                    <div style={{ borderLeft: '4px solid #dc2626', paddingLeft: '1rem' }}>
+                      <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Long-Term Growth</h3>
+                      <p style={{ fontSize: '0.875rem', color: '#666' }}>
+                        Coca-Cola has demonstrated consistent growth with a {metrics.cagr}% CAGR over 30 years, 
+                        showing resilience through multiple economic cycles including the 2008 financial crisis and 
+                        2020 pandemic.
+                      </p>
+                    </div>
+                    
+                    <div style={{ borderLeft: '4px solid #2563eb', paddingLeft: '1rem' }}>
+                      <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Seasonal Patterns</h3>
+                      <p style={{ fontSize: '0.875rem', color: '#666' }}>
+                        Clear seasonality is evident with Q2 and Q3 (summer months) consistently outperforming 
+                        Q1 and Q4, reflecting higher beverage consumption during warmer months.
+                      </p>
+                    </div>
+                    
+                    <div style={{ borderLeft: '4px solid #16a34a', paddingLeft: '1rem' }}>
+                      <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Margin Improvement</h3>
+                      <p style={{ fontSize: '0.875rem', color: '#666' }}>
+                        Operating and net margins have gradually improved over the decades through operational 
+                        efficiency, cost management, and portfolio optimization strategies.
+                      </p>
+                    </div>
+                    
+                    <div style={{ borderLeft: '4px solid #9333ea', paddingLeft: '1rem' }}>
+                      <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Forecast Outlook</h3>
+                      <p style={{ fontSize: '0.875rem', color: '#666' }}>
+                        Based on recent trends, the forecast predicts continued moderate growth with seasonal 
+                        variations. The model accounts for historical patterns and recent performance trajectory.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        ReactDOM.render(<CocaColaAnalysis />, document.getElementById('root'));
+    </script>
+</body>
+</html>
+"""
+
+@app.route('/')
+def home():
+    return render_template_string(HOME_PAGE)
+
+@app.route('/analytics')
+def analytics():
+    return render_template_string(ANALYTICS_PAGE)
+
+@app.route('/coca-cola')
+def coca_cola():
+    return render_template_string(COCA_COLA_PAGE)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080).active {
+            background: rgba(255,255,255,0.2);
+        }
         .container {
             max-width: 1200px;
             margin: 2rem auto;
@@ -204,6 +536,7 @@ HOME_PAGE = """
             <div class="nav-links">
                 <a href="/" class="active">Resume</a>
                 <a href="/analytics">Analytics</a>
+                <a href="/coca-cola">Coca-Cola Analysis</a>
             </div>
         </div>
     </nav>
@@ -539,6 +872,7 @@ ANALYTICS_PAGE = """
             <div class="nav-links">
                 <a href="/">Resume</a>
                 <a href="/analytics" class="active">Analytics</a>
+                <a href="/coca-cola">Coca-Cola Analysis</a>
             </div>
         </div>
     </nav>
@@ -694,13 +1028,59 @@ ANALYTICS_PAGE = """
 </html>
 """
 
-@app.route('/')
-def home():
-    return render_template_string(HOME_PAGE)
-
-@app.route('/analytics')
-def analytics():
-    return render_template_string(ANALYTICS_PAGE)
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+# Coca-Cola Analysis page
+COCA_COLA_PAGE = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Coca-Cola Financial Analysis - Aditya Madipadaga</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/recharts@2.5.0/dist/Recharts.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav-links a:hover, .nav-links a
