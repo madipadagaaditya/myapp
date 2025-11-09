@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, request
+from flask import Flask, render_template_string, request,Response
 
 app = Flask(__name__)
 
@@ -325,7 +325,7 @@ def analytics():
 
 @app.route('/coca-cola')
 def coca_cola():
-    return render_template_string("{% raw %}" + COCA_COLA_PAGE + "{% endraw %}")
+    return Response(COCA_COLA_PAGE, mimetype='text/html')
 
 
 if __name__ == '__main__':
