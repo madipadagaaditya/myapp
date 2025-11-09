@@ -325,7 +325,7 @@ def analytics():
 
 @app.route('/coca-cola')
 def coca_cola():
-    return Response(COCA_COLA_PAGE, mimetype='text/html')
+    return render_template_string(COCA_COLA_PAGE)
 
 
 if __name__ == '__main__':
