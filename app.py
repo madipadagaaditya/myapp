@@ -325,7 +325,8 @@ def analytics():
 
 @app.route('/coca-cola')
 def coca_cola():
-    return render_template_string(COCA_COLA_PAGE)
+    return render_template_string("{% raw %}" + COCA_COLA_PAGE + "{% endraw %}")
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
