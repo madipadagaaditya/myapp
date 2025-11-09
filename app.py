@@ -10,522 +10,43 @@ HOME_PAGE = """
     <title>Aditya Madipadaga - Resume</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-        .navbar {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-brand {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            background: rgba(255,255,255,0.2);
-        }
-        #root {
-            width: 100%;
-            min-height: calc(100vh - 80px);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .navbar { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand { color: white; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s; }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        .resume-card { background: white; border-radius: 10px; padding: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .header-section { text-align: center; padding-bottom: 2rem; border-bottom: 3px solid #1e3c72; margin-bottom: 2rem; }
+        .header-section h1 { color: #1e3c72; font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .header-section .title { color: #666; font-size: 1.4rem; margin-bottom: 1rem; font-weight: 500; }
+        .contact-info { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; color: #666; font-size: 0.95rem; }
+        .contact-info a { color: #1e3c72; text-decoration: none; }
+        .contact-info a:hover { text-decoration: underline; }
+        .section { margin-bottom: 2.5rem; }
+        .section h2 { color: #1e3c72; font-size: 1.8rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e0e0e0; font-weight: 600; }
+        .experience-item, .education-item { margin-bottom: 2rem; padding-left: 1.5rem; border-left: 3px solid #1e3c72; }
+        .experience-item h3, .education-item h3 { color: #1e3c72; font-size: 1.3rem; margin-bottom: 0.3rem; font-weight: 600; }
+        .experience-item .meta, .education-item .meta { color: #666; font-style: italic; margin-bottom: 0.8rem; font-size: 0.95rem; }
+        .experience-item ul { margin-left: 1.5rem; margin-top: 0.5rem; }
+        .experience-item li { margin-bottom: 0.6rem; line-height: 1.7; }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .skill-category { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #1e3c72; }
+        .skill-category h4 { color: #1e3c72; margin-bottom: 0.8rem; font-size: 1.1rem; font-weight: 600; }
+        .skill-category ul { list-style: none; }
+        .skill-category li { padding: 0.4rem 0; color: #555; }
+        .skill-category li:before { content: "▸ "; color: #1e3c72; font-weight: bold; }
+        .honors-section { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #1e3c72; }
+        .honors-section p { margin-bottom: 0.5rem; line-height: 1.8; }
+        .honors-section strong { color: #1e3c72; }
         @media (max-width: 768px) {
-            .nav-links {
-                gap: 0.5rem;
-            }
-            .nav-links a {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.85rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">Aditya Madipadaga</a>
-            <div class="nav-links">
-                <a href="/">Resume</a>
-                <a href="/analytics">Analytics</a>
-                <a href="/coca-cola" class="active">Coca-Cola Analysis</a>
-            </div>
-        </div>
-    </nav>
-    
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState, useMemo } = React;
-        const { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } = Recharts;
-
-        const CocaColaAnalysis = () => {
-          const [forecastYears, setForecastYears] = useState(2);
-          
-          const generateHistoricalData = () => {
-            const data = [];
-            const startYear = 1994;
-            const endYear = 2024;
-            const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-            
-            let baseRevenue = 4500;
-            
-            for (let year = startYear; year <= endYear; year++) {
-              for (let q = 0; q < 4; q++) {
-                const quarter = quarters[q];
-                
-                let growthRate;
-                if (year < 2000) growthRate = 0.045;
-                else if (year < 2008) growthRate = 0.055;
-                else if (year < 2010) growthRate = -0.02;
-                else if (year < 2020) growthRate = 0.04;
-                else if (year === 2020) growthRate = -0.08;
-                else growthRate = 0.06;
-                
-                const seasonality = [0.95, 1.08, 1.05, 0.92][q];
-                const variance = 1 + (Math.random() - 0.5) * 0.08;
-                
-                baseRevenue *= (1 + growthRate / 4);
-                const revenue = baseRevenue * seasonality * variance;
-                
-                const operatingMargin = 0.18 + (year - startYear) * 0.002;
-                const operatingIncome = revenue * operatingMargin * (1 + (Math.random() - 0.5) * 0.1);
-                
-                const netMargin = 0.14 + (year - startYear) * 0.0015;
-                const netIncome = revenue * netMargin * (1 + (Math.random() - 0.5) * 0.12);
-                
-                data.push({
-                  period: `${year} ${quarter}`,
-                  year,
-                  quarter,
-                  revenue: Math.round(revenue),
-                  operatingIncome: Math.round(operatingIncome),
-                  netIncome: Math.round(netIncome),
-                  date: new Date(year, q * 3, 1)
-                });
-              }
-            }
-            
-            return data;
-          };
-          
-          const historicalData = useMemo(() => generateHistoricalData(), []);
-          
-          const calculateTrend = (data, metric) => {
-            const n = data.length;
-            const sumX = data.reduce((sum, d, i) => sum + i, 0);
-            const sumY = data.reduce((sum, d) => sum + d[metric], 0);
-            const sumXY = data.reduce((sum, d, i) => sum + i * d[metric], 0);
-            const sumX2 = data.reduce((sum, d, i) => sum + i * i, 0);
-            
-            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-            const intercept = (sumY - slope * sumX) / n;
-            
-            return { slope, intercept };
-          };
-          
-          const generateForecast = () => {
-            const lastPoint = historicalData[historicalData.length - 1];
-            const recentData = historicalData.slice(-40);
-            
-            const revenueTrend = calculateTrend(recentData, 'revenue');
-            const operatingTrend = calculateTrend(recentData, 'operatingIncome');
-            const netTrend = calculateTrend(recentData, 'netIncome');
-            
-            const forecast = [];
-            const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-            const seasonality = [0.95, 1.08, 1.05, 0.92];
-            
-            for (let i = 1; i <= forecastYears * 4; i++) {
-              const year = lastPoint.year + Math.floor((parseInt(lastPoint.quarter.charAt(1)) - 1 + i) / 4);
-              const q = ((parseInt(lastPoint.quarter.charAt(1)) - 1 + i) % 4);
-              const quarter = quarters[q];
-              
-              const baseRevenue = revenueTrend.slope * (historicalData.length + i) + revenueTrend.intercept;
-              const revenue = baseRevenue * seasonality[q];
-              
-              const baseOperating = operatingTrend.slope * (historicalData.length + i) + operatingTrend.intercept;
-              const operatingIncome = baseOperating * seasonality[q];
-              
-              const baseNet = netTrend.slope * (historicalData.length + i) + netTrend.intercept;
-              const netIncome = baseNet * seasonality[q];
-              
-              forecast.push({
-                period: `${year} ${quarter}`,
-                year,
-                quarter,
-                revenue: Math.round(revenue),
-                operatingIncome: Math.round(operatingIncome),
-                netIncome: Math.round(netIncome),
-                isForecast: true
-              });
-            }
-            
-            return forecast;
-          };
-          
-          const forecastData = useMemo(() => generateForecast(), [forecastYears]);
-          const combinedData = [...historicalData, ...forecastData];
-          
-          const metrics = useMemo(() => {
-            const recent = historicalData.slice(-4);
-            const previousYear = historicalData.slice(-8, -4);
-            
-            const currentRevenue = recent.reduce((sum, d) => sum + d.revenue, 0);
-            const previousRevenue = previousYear.reduce((sum, d) => sum + d.revenue, 0);
-            const revenueGrowth = ((currentRevenue - previousRevenue) / previousRevenue * 100).toFixed(2);
-            
-            const avgMargin = (recent.reduce((sum, d) => sum + (d.netIncome / d.revenue), 0) / 4 * 100).toFixed(2);
-            
-            const first = historicalData[0];
-            const last = historicalData[historicalData.length - 1];
-            const cagr = (Math.pow(last.revenue / first.revenue, 1 / 30) - 1) * 100;
-            
-            return {
-              currentRevenue: (currentRevenue / 1000).toFixed(2),
-              revenueGrowth,
-              avgMargin,
-              cagr: cagr.toFixed(2),
-              totalQuarters: historicalData.length
-            };
-          }, [historicalData]);
-          
-          const annualData = useMemo(() => {
-            const annual = {};
-            historicalData.forEach(d => {
-              if (!annual[d.year]) {
-                annual[d.year] = { year: d.year, revenue: 0, operatingIncome: 0, netIncome: 0 };
-              }
-              annual[d.year].revenue += d.revenue;
-              annual[d.year].operatingIncome += d.operatingIncome;
-              annual[d.year].netIncome += d.netIncome;
-            });
-            return Object.values(annual);
-          }, [historicalData]);
-          
-          return (
-            <div style={{ width: '100%', background: 'linear-gradient(to bottom right, #fef2f2, white)', padding: '1.5rem', minHeight: '100vh' }}>
-              <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                  <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#dc2626', marginBottom: '0.5rem' }}>Coca-Cola Financial Analysis</h1>
-                  <p style={{ color: '#666' }}>30 Years of Quarterly Performance (1994-2024) with Forecasting</p>
-                </div>
-                
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-                  <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #dc2626' }}>
-                    <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Annual Revenue</div>
-                    <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>${metrics.currentRevenue}B</p>
-                    <p style={{ fontSize: '0.875rem', color: '#16a34a' }}>+{metrics.revenueGrowth}% YoY</p>
-                  </div>
-                  
-                  <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #2563eb' }}>
-                    <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>30-Year CAGR</div>
-                    <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.cagr}%</p>
-                    <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Compound Annual Growth</p>
-                  </div>
-                  
-                  <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #16a34a' }}>
-                    <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Net Margin</div>
-                    <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.avgMargin}%</p>
-                    <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Last 4 Quarters</p>
-                  </div>
-                  
-                  <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #9333ea' }}>
-                    <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Data Points</div>
-                    <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.totalQuarters}</p>
-                    <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Quarters Analyzed</p>
-                  </div>
-                </div>
-                
-                <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937' }}>Quarterly Revenue Trend & Forecast</h2>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <label style={{ fontSize: '0.875rem', color: '#666' }}>Forecast Years:</label>
-                      <select value={forecastYears} onChange={(e) => setForecastYears(Number(e.target.value))} style={{ border: '1px solid #d1d5db', borderRadius: '0.25rem', padding: '0.25rem 0.5rem' }}>
-                        <option value={1}>1 Year</option>
-                        <option value={2}>2 Years</option>
-                        <option value={3}>3 Years</option>
-                        <option value={5}>5 Years</option>
-                      </select>
-                    </div>
-                  </div>
-                  <ResponsiveContainer width="100%" height={400}>
-                    <AreaChart data={combinedData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="period" angle={-45} textAnchor="end" height={80} interval={15} />
-                      <YAxis label={{ value: 'Revenue ($M)', angle: -90, position: 'insideLeft' }} />
-                      <Tooltip formatter={(value) => `${value}M`} />
-                      <Legend />
-                      <Area type="monotone" dataKey="revenue" stroke="#DC2626" fill="#FEE2E2" name="Historical Revenue" strokeWidth={2} />
-                      <Area type="monotone" dataKey={(d) => d.isForecast ? d.revenue : null} stroke="#3B82F6" fill="#DBEAFE" name="Forecasted Revenue" strokeDasharray="5 5" strokeWidth={2} />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-                
-                <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
-                  <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Annual Performance Overview</h2>
-                  <ResponsiveContainer width="100%" height={400}>
-                    <BarChart data={annualData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="year" />
-                      <YAxis label={{ value: 'Amount ($M)', angle: -90, position: 'insideLeft' }} />
-                      <Tooltip formatter={(value) => `${value}M`} />
-                      <Legend />
-                      <Bar dataKey="revenue" fill="#DC2626" name="Revenue" />
-                      <Bar dataKey="operatingIncome" fill="#F59E0B" name="Operating Income" />
-                      <Bar dataKey="netIncome" fill="#10B981" name="Net Income" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                
-                <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
-                  <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Profitability Metrics Over Time</h2>
-                  <ResponsiveContainer width="100%" height={400}>
-                    <LineChart data={historicalData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="period" angle={-45} textAnchor="end" height={80} interval={15} />
-                      <YAxis label={{ value: 'Income ($M)', angle: -90, position: 'insideLeft' }} />
-                      <Tooltip formatter={(value) => `${value}M`} />
-                      <Legend />
-                      <Line type="monotone" dataKey="operatingIncome" stroke="#F59E0B" name="Operating Income" strokeWidth={2} dot={false} />
-                      <Line type="monotone" dataKey="netIncome" stroke="#10B981" name="Net Income" strokeWidth={2} dot={false} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-                
-                <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem' }}>
-                  <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Key Insights</h2>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
-                    <div style={{ borderLeft: '4px solid #dc2626', paddingLeft: '1rem' }}>
-                      <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Long-Term Growth</h3>
-                      <p style={{ fontSize: '0.875rem', color: '#666' }}>
-                        Coca-Cola has demonstrated consistent growth with a {metrics.cagr}% CAGR over 30 years, 
-                        showing resilience through multiple economic cycles including the 2008 financial crisis and 
-                        2020 pandemic.
-                      </p>
-                    </div>
-                    
-                    <div style={{ borderLeft: '4px solid #2563eb', paddingLeft: '1rem' }}>
-                      <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Seasonal Patterns</h3>
-                      <p style={{ fontSize: '0.875rem', color: '#666' }}>
-                        Clear seasonality is evident with Q2 and Q3 (summer months) consistently outperforming 
-                        Q1 and Q4, reflecting higher beverage consumption during warmer months.
-                      </p>
-                    </div>
-                    
-                    <div style={{ borderLeft: '4px solid #16a34a', paddingLeft: '1rem' }}>
-                      <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Margin Improvement</h3>
-                      <p style={{ fontSize: '0.875rem', color: '#666' }}>
-                        Operating and net margins have gradually improved over the decades through operational 
-                        efficiency, cost management, and portfolio optimization strategies.
-                      </p>
-                    </div>
-                    
-                    <div style={{ borderLeft: '4px solid #9333ea', paddingLeft: '1rem' }}>
-                      <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Forecast Outlook</h3>
-                      <p style={{ fontSize: '0.875rem', color: '#666' }}>
-                        Based on recent trends, the forecast predicts continued moderate growth with seasonal 
-                        variations. The model accounts for historical patterns and recent performance trajectory.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        };
-
-        ReactDOM.render(<CocaColaAnalysis />, document.getElementById('root'));
-    </script>
-</body>
-</html>
-"""
-
-@app.route('/')
-def home():
-    return render_template_string(HOME_PAGE)
-
-@app.route('/analytics')
-def analytics():
-    return render_template_string(ANALYTICS_PAGE)
-
-@app.route('/coca-cola')
-def coca_cola():
-    return render_template_string(COCA_COLA_PAGE)
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080).active {
-            background: rgba(255,255,255,0.2);
-        }
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        .resume-card {
-            background: white;
-            border-radius: 10px;
-            padding: 3rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-        .header-section {
-            text-align: center;
-            padding-bottom: 2rem;
-            border-bottom: 3px solid #1e3c72;
-            margin-bottom: 2rem;
-        }
-        .header-section h1 {
-            color: #1e3c72;
-            font-size: 2.8rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-        .header-section .title {
-            color: #666;
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            color: #666;
-            font-size: 0.95rem;
-        }
-        .contact-info a {
-            color: #1e3c72;
-            text-decoration: none;
-        }
-        .contact-info a:hover {
-            text-decoration: underline;
-        }
-        .section {
-            margin-bottom: 2.5rem;
-        }
-        .section h2 {
-            color: #1e3c72;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e0e0e0;
-            font-weight: 600;
-        }
-        .experience-item, .education-item {
-            margin-bottom: 2rem;
-            padding-left: 1.5rem;
-            border-left: 3px solid #1e3c72;
-        }
-        .experience-item h3, .education-item h3 {
-            color: #1e3c72;
-            font-size: 1.3rem;
-            margin-bottom: 0.3rem;
-            font-weight: 600;
-        }
-        .experience-item .meta, .education-item .meta {
-            color: #666;
-            font-style: italic;
-            margin-bottom: 0.8rem;
-            font-size: 0.95rem;
-        }
-        .experience-item ul {
-            margin-left: 1.5rem;
-            margin-top: 0.5rem;
-        }
-        .experience-item li {
-            margin-bottom: 0.6rem;
-            line-height: 1.7;
-        }
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-        .skill-category {
-            background: #f9f9f9;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 4px solid #1e3c72;
-        }
-        .skill-category h4 {
-            color: #1e3c72;
-            margin-bottom: 0.8rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        .skill-category ul {
-            list-style: none;
-        }
-        .skill-category li {
-            padding: 0.4rem 0;
-            color: #555;
-        }
-        .skill-category li:before {
-            content: "▸ ";
-            color: #1e3c72;
-            font-weight: bold;
-        }
-        .honors-section {
-            background: #f9f9f9;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 4px solid #1e3c72;
-        }
-        .honors-section p {
-            margin-bottom: 0.5rem;
-            line-height: 1.8;
-        }
-        .honors-section strong {
-            color: #1e3c72;
-        }
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
-            }
-            .nav-links a {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.9rem;
-            }
-            .header-section h1 {
-                font-size: 2rem;
-            }
-            .contact-info {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
+            .nav-links { gap: 0.5rem; }
+            .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
+            .header-section h1 { font-size: 2rem; }
+            .contact-info { flex-direction: column; gap: 0.5rem; }
         }
     </style>
 </head>
@@ -536,11 +57,10 @@ if __name__ == '__main__':
             <div class="nav-links">
                 <a href="/" class="active">Resume</a>
                 <a href="/analytics">Analytics</a>
-                <a href="/coca-cola">Coca-Cola Analysis</a>
+                <a href="/coca-cola">Coca-Cola</a>
             </div>
         </div>
     </nav>
-    
     <div class="container">
         <div class="resume-card">
             <div class="header-section">
@@ -553,7 +73,6 @@ if __name__ == '__main__':
                     <span>📍 Chicago, Illinois</span>
                 </div>
             </div>
-
             <div class="section">
                 <h2>Education</h2>
                 <div class="education-item">
@@ -563,7 +82,6 @@ if __name__ == '__main__':
                     <p><strong>Relevant Courses:</strong> Macroeconomics, Microeconomics, Information Systems</p>
                 </div>
             </div>
-
             <div class="section">
                 <h2>Technical & Analytical Skills</h2>
                 <div class="skills-grid">
@@ -605,10 +123,8 @@ if __name__ == '__main__':
                     </div>
                 </div>
             </div>
-
             <div class="section">
                 <h2>Professional Experience</h2>
-                
                 <div class="experience-item">
                     <h3>Sales Operations Analyst Intern</h3>
                     <p class="meta">Muffins AI – Schaumburg, IL | June 2025 – August 2025</p>
@@ -620,7 +136,6 @@ if __name__ == '__main__':
                         <li>Ensured 98% database accuracy through rigorous data validation and entry oversight</li>
                     </ul>
                 </div>
-
                 <div class="experience-item">
                     <h3>Case Study Analyst - Coca-Cola Quarterly Revenue Trend</h3>
                     <p class="meta">Loyola University, Chicago, IL | April 2025 – May 2025</p>
@@ -630,7 +145,6 @@ if __name__ == '__main__':
                         <li>Compiled datasets on quarterly revenue, gross profit, and net income (1993–2024) for financial trend analysis</li>
                     </ul>
                 </div>
-
                 <div class="experience-item">
                     <h3>Case Study Analyst - PepsiCo 2024 Annual Report</h3>
                     <p class="meta">Loyola University, Chicago, IL | April 2025 – May 2025</p>
@@ -640,7 +154,6 @@ if __name__ == '__main__':
                         <li>Built predictive models to estimate financial performance based on historical and ratio-driven data</li>
                     </ul>
                 </div>
-
                 <div class="experience-item">
                     <h3>Data Analyst Intern</h3>
                     <p class="meta">GAC Solutions – Schaumburg, IL | June 2024 – September 2024</p>
@@ -652,10 +165,8 @@ if __name__ == '__main__':
                     </ul>
                 </div>
             </div>
-
             <div class="section">
                 <h2>Leadership & Volunteering</h2>
-                
                 <div class="experience-item">
                     <h3>Eagle Scout Project Volunteer</h3>
                     <p class="meta">Schaumburg, IL | November 2024</p>
@@ -665,7 +176,6 @@ if __name__ == '__main__':
                         <li>Guided and placed planks over the duration of 8 hours</li>
                     </ul>
                 </div>
-
                 <div class="experience-item">
                     <h3>Volunteering Director</h3>
                     <p class="meta">PURE Youth – Schaumburg, IL | August 2020 – May 2022</p>
@@ -678,7 +188,6 @@ if __name__ == '__main__':
                     </ul>
                 </div>
             </div>
-
             <div class="section">
                 <h2>Certifications & Interests</h2>
                 <div class="honors-section">
@@ -692,7 +201,6 @@ if __name__ == '__main__':
 </html>
 """
 
-# Analytics page
 ANALYTICS_PAGE = """
 <!DOCTYPE html>
 <html>
@@ -700,168 +208,36 @@ ANALYTICS_PAGE = """
     <title>Analytics Dashboard - Aditya Madipadaga</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-        .navbar {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-brand {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            background: rgba(255,255,255,0.2);
-        }
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        .chart-container {
-            background: white;
-            border-radius: 10px;
-            padding: 2.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-        .chart-container h3 {
-            color: #1e3c72;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            text-align: center;
-        }
-        .bar-chart {
-            margin: 2rem 0;
-        }
-        .bar {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .bar-label {
-            width: 150px;
-            font-weight: 500;
-            color: #333;
-        }
-        .bar-container {
-            flex: 1;
-            background: #e0e0e0;
-            border-radius: 10px;
-            height: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-        .bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #1e3c72, #2a5298);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            color: white;
-            font-weight: bold;
-            font-size: 0.9rem;
-            transition: width 1s ease;
-        }
-        .timeline {
-            position: relative;
-            padding: 2rem 0;
-        }
-        .timeline-item {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        .timeline-date {
-            min-width: 120px;
-            font-weight: 600;
-            color: #1e3c72;
-        }
-        .timeline-content {
-            flex: 1;
-            background: #f9f9f9;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 3px solid #1e3c72;
-        }
-        .timeline-content h4 {
-            color: #1e3c72;
-            margin-bottom: 0.5rem;
-        }
-        .metric-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        .metric-card {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .metric-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        .metric-label {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .navbar { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand { color: white; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s; }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        .chart-container { background: white; border-radius: 10px; padding: 2.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .chart-container h3 { color: #1e3c72; margin-bottom: 1.5rem; font-size: 1.5rem; text-align: center; }
+        .bar-chart { margin: 2rem 0; }
+        .bar { display: flex; align-items: center; margin-bottom: 1rem; }
+        .bar-label { width: 150px; font-weight: 500; color: #333; }
+        .bar-container { flex: 1; background: #e0e0e0; border-radius: 10px; height: 30px; position: relative; overflow: hidden; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, #1e3c72, #2a5298); border-radius: 10px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-weight: bold; font-size: 0.9rem; transition: width 1s ease; }
+        .timeline { position: relative; padding: 2rem 0; }
+        .timeline-item { display: flex; gap: 2rem; margin-bottom: 2rem; position: relative; }
+        .timeline-date { min-width: 120px; font-weight: 600; color: #1e3c72; }
+        .timeline-content { flex: 1; background: #f9f9f9; padding: 1.5rem; border-radius: 8px; border-left: 3px solid #1e3c72; }
+        .timeline-content h4 { color: #1e3c72; margin-bottom: 0.5rem; }
+        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .metric-card { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 2rem; border-radius: 10px; text-align: center; }
+        .metric-value { font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .metric-label { font-size: 1rem; opacity: 0.9; }
         @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
-            }
-            .nav-links a {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.9rem;
-            }
-            .bar-label {
-                width: 100px;
-                font-size: 0.9rem;
-            }
-            .timeline-item {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
+            .nav-links { gap: 0.5rem; }
+            .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
+            .bar-label { width: 100px; font-size: 0.9rem; }
+            .timeline-item { flex-direction: column; gap: 0.5rem; }
         }
     </style>
 </head>
@@ -872,155 +248,64 @@ ANALYTICS_PAGE = """
             <div class="nav-links">
                 <a href="/">Resume</a>
                 <a href="/analytics" class="active">Analytics</a>
-                <a href="/coca-cola">Coca-Cola Analysis</a>
+                <a href="/coca-cola">Coca-Cola</a>
             </div>
         </div>
     </nav>
-    
     <div class="container">
         <div class="chart-container">
             <h3>📊 Professional Impact Metrics</h3>
             <div class="metric-grid">
-                <div class="metric-card">
-                    <div class="metric-value">250+</div>
-                    <div class="metric-label">Sales Data Tables Analyzed</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">100+</div>
-                    <div class="metric-label">Performance Reports Generated</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">98%</div>
-                    <div class="metric-label">Database Accuracy</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">50%</div>
-                    <div class="metric-label">Efficiency Improvement</div>
-                </div>
+                <div class="metric-card"><div class="metric-value">250+</div><div class="metric-label">Sales Data Tables Analyzed</div></div>
+                <div class="metric-card"><div class="metric-value">100+</div><div class="metric-label">Performance Reports Generated</div></div>
+                <div class="metric-card"><div class="metric-value">98%</div><div class="metric-label">Database Accuracy</div></div>
+                <div class="metric-card"><div class="metric-value">50%</div><div class="metric-label">Efficiency Improvement</div></div>
             </div>
         </div>
-
         <div class="chart-container">
             <h3>💼 Work Experience Timeline</h3>
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-date">Jun - Aug 2025</div>
-                    <div class="timeline-content">
-                        <h4>Muffins AI</h4>
-                        <p>Sales Operations Analyst Intern</p>
-                        <p style="margin-top: 0.5rem; color: #666;">Led data analysis initiatives improving sales efficiency by 50%</p>
-                    </div>
+                    <div class="timeline-content"><h4>Muffins AI</h4><p>Sales Operations Analyst Intern</p><p style="margin-top: 0.5rem; color: #666;">Led data analysis initiatives improving sales efficiency by 50%</p></div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">Apr - May 2025</div>
-                    <div class="timeline-content">
-                        <h4>Loyola University</h4>
-                        <p>Case Study Analyst (Coca-Cola & PepsiCo)</p>
-                        <p style="margin-top: 0.5rem; color: #666;">Financial analysis and predictive modeling projects</p>
-                    </div>
+                    <div class="timeline-content"><h4>Loyola University</h4><p>Case Study Analyst (Coca-Cola & PepsiCo)</p><p style="margin-top: 0.5rem; color: #666;">Financial analysis and predictive modeling projects</p></div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">Jun - Sep 2024</div>
-                    <div class="timeline-content">
-                        <h4>GAC Solutions</h4>
-                        <p>Data Analyst Intern</p>
-                        <p style="margin-top: 0.5rem; color: #666;">SEO optimization and digital marketing analytics</p>
-                    </div>
+                    <div class="timeline-content"><h4>GAC Solutions</h4><p>Data Analyst Intern</p><p style="margin-top: 0.5rem; color: #666;">SEO optimization and digital marketing analytics</p></div>
                 </div>
             </div>
         </div>
-
         <div class="chart-container">
             <h3>🛠️ Technical Skills Proficiency</h3>
             <div class="bar-chart">
-                <div class="bar">
-                    <div class="bar-label">Excel</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 95%;">95%</div>
-                    </div>
-                </div>
-                <div class="bar">
-                    <div class="bar-label">Power BI</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 90%;">90%</div>
-                    </div>
-                </div>
-                <div class="bar">
-                    <div class="bar-label">SQL</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 85%;">85%</div>
-                    </div>
-                </div>
-                <div class="bar">
-                    <div class="bar-label">Python</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 80%;">80%</div>
-                    </div>
-                </div>
-                <div class="bar">
-                    <div class="bar-label">Tableau</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 85%;">85%</div>
-                    </div>
-                </div>
-                <div class="bar">
-                    <div class="bar-label">Statistical Analysis</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 88%;">88%</div>
-                    </div>
-                </div>
+                <div class="bar"><div class="bar-label">Excel</div><div class="bar-container"><div class="bar-fill" style="width: 95%;">95%</div></div></div>
+                <div class="bar"><div class="bar-label">Power BI</div><div class="bar-container"><div class="bar-fill" style="width: 90%;">90%</div></div></div>
+                <div class="bar"><div class="bar-label">SQL</div><div class="bar-container"><div class="bar-fill" style="width: 85%;">85%</div></div></div>
+                <div class="bar"><div class="bar-label">Python</div><div class="bar-container"><div class="bar-fill" style="width: 80%;">80%</div></div></div>
+                <div class="bar"><div class="bar-label">Tableau</div><div class="bar-container"><div class="bar-fill" style="width: 85%;">85%</div></div></div>
+                <div class="bar"><div class="bar-label">Statistical Analysis</div><div class="bar-container"><div class="bar-fill" style="width: 88%;">88%</div></div></div>
             </div>
         </div>
-
         <div class="chart-container">
             <h3>📈 Data Analysis Projects - Scale & Impact</h3>
             <div class="bar-chart">
-                <div class="bar">
-                    <div class="bar-label">Muffins AI</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #16a085, #27ae60);">250+ Tables</div>
-                    </div>
-                </div>
-                <div class="bar">
-                    <div class="bar-label">Coca-Cola Study</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 70%; background: linear-gradient(90deg, #2980b9, #3498db);">30 Years Data</div>
-                    </div>
-                </div>
-                <div class="bar">
-                    <div class="bar-label">PepsiCo Study</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 65%; background: linear-gradient(90deg, #8e44ad, #9b59b6);">7 Key Ratios</div>
-                    </div>
-                </div>
-                <div class="bar">
-                    <div class="bar-label">GAC Solutions</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 60%; background: linear-gradient(90deg, #d35400, #e67e22);">Web Analytics</div>
-                    </div>
-                </div>
+                <div class="bar"><div class="bar-label">Muffins AI</div><div class="bar-container"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #16a085, #27ae60);">250+ Tables</div></div></div>
+                <div class="bar"><div class="bar-label">Coca-Cola Study</div><div class="bar-container"><div class="bar-fill" style="width: 70%; background: linear-gradient(90deg, #2980b9, #3498db);">30 Years Data</div></div></div>
+                <div class="bar"><div class="bar-label">PepsiCo Study</div><div class="bar-container"><div class="bar-fill" style="width: 65%; background: linear-gradient(90deg, #8e44ad, #9b59b6);">7 Key Ratios</div></div></div>
+                <div class="bar"><div class="bar-label">GAC Solutions</div><div class="bar-container"><div class="bar-fill" style="width: 60%; background: linear-gradient(90deg, #d35400, #e67e22);">Web Analytics</div></div></div>
             </div>
         </div>
-
         <div class="chart-container">
             <h3>🤝 Community Impact</h3>
             <div class="metric-grid">
-                <div class="metric-card" style="background: linear-gradient(135deg, #16a085, #27ae60);">
-                    <div class="metric-value">$1,000</div>
-                    <div class="metric-label">Raised for Charity</div>
-                </div>
-                <div class="metric-card" style="background: linear-gradient(135deg, #2980b9, #3498db);">
-                    <div class="metric-value">200+</div>
-                    <div class="metric-label">Food Items Collected</div>
-                </div>
-                <div class="metric-card" style="background: linear-gradient(135deg, #8e44ad, #9b59b6);">
-                    <div class="metric-value">100+</div>
-                    <div class="metric-label">School Supplies Donated</div>
-                </div>
-                <div class="metric-card" style="background: linear-gradient(135deg, #d35400, #e67e22);">
-                    <div class="metric-value">8 Hours</div>
-                    <div class="metric-label">Eagle Scout Project</div>
-                </div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #16a085, #27ae60);"><div class="metric-value">$1,000</div><div class="metric-label">Raised for Charity</div></div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #2980b9, #3498db);"><div class="metric-value">200+</div><div class="metric-label">Food Items Collected</div></div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #8e44ad, #9b59b6);"><div class="metric-value">100+</div><div class="metric-label">School Supplies Donated</div></div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #d35400, #e67e22);"><div class="metric-value">8 Hours</div><div class="metric-label">Eagle Scout Project</div></div>
             </div>
         </div>
     </div>
@@ -1028,59 +313,19 @@ ANALYTICS_PAGE = """
 </html>
 """
 
-# Coca-Cola Analysis page
-COCA_COLA_PAGE = """
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Coca-Cola Financial Analysis - Aditya Madipadaga</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/recharts@2.5.0/dist/Recharts.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-        .navbar {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-brand {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .nav-links a:hover, .nav-links a
+COCA_COLA_PAGE = """<!DOCTYPE html><html><head><title>Coca-Cola Analysis</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script><script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script><script src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script src="https://cdn.jsdelivr.net/npm/recharts@2.5.0/dist/Recharts.js"></script><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f5f5f5}.navbar{background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);padding:1rem 2rem;box-shadow:0 2px 10px rgba(0,0,0,0.1);position:sticky;top:0;z-index:100}.nav-container{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}.nav-brand{color:white;font-size:1.5rem;font-weight:bold;text-decoration:none}.nav-links{display:flex;gap:2rem}.nav-links a{color:white;text-decoration:none;padding:0.5rem 1rem;border-radius:5px;transition:background 0.3s}.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,0.2)}#root{width:100%;min-height:calc(100vh - 80px)}@media (max-width:768px){.nav-links{gap:0.5rem}.nav-links a{padding:0.4rem 0.6rem;font-size:0.85rem}}</style></head><body><nav class="navbar"><div class="nav-container"><a href="/" class="nav-brand">Aditya Madipadaga</a><div class="nav-links"><a href="/">Resume</a><a href="/analytics">Analytics</a><a href="/coca-cola" class="active">Coca-Cola</a></div></div></nav><div id="root"></div><script type="text/babel">const{useState,useMemo}=React;const{LineChart,Line,BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip,Legend,ResponsiveContainer,Area,AreaChart}=Recharts;const CocaColaAnalysis=()=>{const[forecastYears,setForecastYears]=useState(2);const generateHistoricalData=()=>{const data=[];const startYear=1994;const endYear=2024;const quarters=['Q1','Q2','Q3','Q4'];let baseRevenue=4500;for(let year=startYear;year<=endYear;year++){for(let q=0;q<4;q++){const quarter=quarters[q];let growthRate;if(year<2000)growthRate=0.045;else if(year<2008)growthRate=0.055;else if(year<2010)growthRate=-0.02;else if(year<2020)growthRate=0.04;else if(year===2020)growthRate=-0.08;else growthRate=0.06;const seasonality=[0.95,1.08,1.05,0.92][q];const variance=1+(Math.random()-0.5)*0.08;baseRevenue*=(1+growthRate/4);const revenue=baseRevenue*seasonality*variance;const operatingMargin=0.18+(year-startYear)*0.002;const operatingIncome=revenue*operatingMargin*(1+(Math.random()-0.5)*0.1);const netMargin=0.14+(year-startYear)*0.0015;const netIncome=revenue*netMargin*(1+(Math.random()-0.5)*0.12);data.push({period:`${year} ${quarter}`,year,quarter,revenue:Math.round(revenue),operatingIncome:Math.round(operatingIncome),netIncome:Math.round(netIncome),date:new Date(year,q*3,1)})}}return data};const historicalData=useMemo(()=>generateHistoricalData(),[]);const calculateTrend=(data,metric)=>{const n=data.length;const sumX=data.reduce((sum,d,i)=>sum+i,0);const sumY=data.reduce((sum,d)=>sum+d[metric],0);const sumXY=data.reduce((sum,d,i)=>sum+i*d[metric],0);const sumX2=data.reduce((sum,d,i)=>sum+i*i,0);const slope=(n*sumXY-sumX*sumY)/(n*sumX2-sumX*sumX);const intercept=(sumY-slope*sumX)/n;return{slope,intercept}};const generateForecast=()=>{const lastPoint=historicalData[historicalData.length-1];const recentData=historicalData.slice(-40);const revenueTrend=calculateTrend(recentData,'revenue');const operatingTrend=calculateTrend(recentData,'operatingIncome');const netTrend=calculateTrend(recentData,'netIncome');const forecast=[];const quarters=['Q1','Q2','Q3','Q4'];const seasonality=[0.95,1.08,1.05,0.92];for(let i=1;i<=forecastYears*4;i++){const year=lastPoint.year+Math.floor((parseInt(lastPoint.quarter.charAt(1))-1+i)/4);const q=((parseInt(lastPoint.quarter.charAt(1))-1+i)%4);const quarter=quarters[q];const baseRevenue=revenueTrend.slope*(historicalData.length+i)+revenueTrend.intercept;const revenue=baseRevenue*seasonality[q];const baseOperating=operatingTrend.slope*(historicalData.length+i)+operatingTrend.intercept;const operatingIncome=baseOperating*seasonality[q];const baseNet=netTrend.slope*(historicalData.length+i)+netTrend.intercept;const netIncome=baseNet*seasonality[q];forecast.push({period:`${year} ${quarter}`,year,quarter,revenue:Math.round(revenue),operatingIncome:Math.round(operatingIncome),netIncome:Math.round(netIncome),isForecast:true})}return forecast};const forecastData=useMemo(()=>generateForecast(),[forecastYears]);const combinedData=[...historicalData,...forecastData];const metrics=useMemo(()=>{const recent=historicalData.slice(-4);const previousYear=historicalData.slice(-8,-4);const currentRevenue=recent.reduce((sum,d)=>sum+d.revenue,0);const previousRevenue=previousYear.reduce((sum,d)=>sum+d.revenue,0);const revenueGrowth=((currentRevenue-previousRevenue)/previousRevenue*100).toFixed(2);const avgMargin=(recent.reduce((sum,d)=>sum+(d.netIncome/d.revenue),0)/4*100).toFixed(2);const first=historicalData[0];const last=historicalData[historicalData.length-1];const cagr=(Math.pow(last.revenue/first.revenue,1/30)-1)*100;return{currentRevenue:(currentRevenue/1000).toFixed(2),revenueGrowth,avgMargin,cagr:cagr.toFixed(2),totalQuarters:historicalData.length}},[historicalData]);const annualData=useMemo(()=>{const annual={};historicalData.forEach(d=>{if(!annual[d.year]){annual[d.year]={year:d.year,revenue:0,operatingIncome:0,netIncome:0}}annual[d.year].revenue+=d.revenue;annual[d.year].operatingIncome+=d.operatingIncome;annual[d.year].netIncome+=d.netIncome});return Object.values(annual)},[historicalData]);return(<div style={{width:'100%',background:'linear-gradient(to bottom right, #fef2f2, white)',padding:'1.5rem',minHeight:'100vh'}}><div style={{maxWidth:'1400px',margin:'0 auto'}}><div style={{textAlign:'center',marginBottom:'2rem'}}><h1 style={{fontSize:'2.5rem',fontWeight:'bold',color:'#dc2626',marginBottom:'0.5rem'}}>Coca-Cola Financial Analysis</h1><p style={{color:'#666'}}>30 Years of Quarterly Performance (1994-2024) with Forecasting</p></div><div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))',gap:'1rem',marginBottom:'2rem'}}><div style={{background:'white',borderRadius:'0.5rem',boxShadow:'0 4px 6px rgba(0,0,0,0.1)',padding:'1.5rem',borderLeft:'4px solid #dc2626'}}><div style={{fontSize:'0.875rem',color:'#666',marginBottom:'0.5rem'}}>Annual Revenue</div><p style={{fontSize:'1.875rem',fontWeight:'bold',color:'#1f2937'}}>${metrics.currentRevenue}B</p><p style={{fontSize:'0.875rem',color:'#16a34a'}}>+{metrics.revenueGrowth}% YoY</p></div><div style={{background:'white',borderRadius:'0.5rem',boxShadow:'0 4px 6px rgba(0,0,0,0.1)',padding:'1.5rem',borderLeft:'4px solid #2563eb'}}><div style={{fontSize:'0.875rem',color:'#666',marginBottom:'0.5rem'}}>30-Year CAGR</div><p style={{fontSize:'1.875rem',fontWeight:'bold',color:'#1f2937'}}>{metrics.cagr}%</p><p style={{fontSize:'0.875rem',color:'#6b7280'}}>Compound Annual Growth</p></div><div style={{background:'white',borderRadius:'0.5rem',boxShadow:'0 4px 6px rgba(0,0,0,0.1)',padding:'1.5rem',borderLeft:'4px solid #16a34a'}}><div style={{fontSize:'0.875rem',color:'#666',marginBottom:'0.5rem'}}>Net Margin</div><p style={{fontSize:'1.875rem',fontWeight:'bold',color:'#1f2937'}}>{metrics.avgMargin}%</p><p style={{fontSize:'0.875rem',color:'#6b7280'}}>Last 4 Quarters</p></div><div style={{background:'white',borderRadius:'0.5rem',boxShadow:'0 4px 6px rgba(0,0,0,0.1)',padding:'1.5rem',borderLeft:'4px solid #9333ea'}}><div style={{fontSize:'0.875rem',color:'#666',marginBottom:'0.5rem'}}>Data Points</div><p style={{fontSize:'1.875rem',fontWeight:'bold',color:'#1f2937'}}>{metrics.totalQuarters}</p><p style={{fontSize:'0.875rem',color:'#6b7280'}}>Quarters Analyzed</p></div></div><div style={{background:'white',borderRadius:'0.5rem',boxShadow:'0 4px 6px rgba(0,0,0,0.1)',padding:'2rem',marginBottom:'1.5rem'}}><div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem',flexWrap:'wrap',gap:'1rem'}}><h2 style={{fontSize:'1.5rem',fontWeight:'bold',color:'#1f2937'}}>Quarterly Revenue Trend & Forecast</h2><div style={{display:'flex',alignItems:'center',gap:'0.5rem'}}><label style={{fontSize:'0.875rem',color:'#666'}}>Forecast Years:</label><select value={forecastYears} onChange={(e)=>setForecastYears(Number(e.target.value))} style={{border:'1px solid #d1d5db',borderRadius:'0.25rem',padding:'0.25rem 0.5rem'}}><option value={1}>1 Year</option><option value={2}>2 Years</option><option value={3}>3 Years</option><option value={5}>5 Years</option></select></div></div><ResponsiveContainer width="100%" height={400}><AreaChart data={combinedData}><CartesianGrid strokeDasharray="3 3"/><XAxis dataKey="period" angle={-45} textAnchor="end" height={80} interval={15}/><YAxis label={{value:'Revenue ($M)',angle:-90,position:'insideLeft'}}/><Tooltip formatter={(value)=>`${value}M`}/><Legend/><Area type="monotone" dataKey="revenue" stroke="#DC2626" fill="#FEE2E2" name="Historical Revenue" strokeWidth={2}/><Area type="monotone" dataKey={(d)=>d.isForecast?d.revenue:null} stroke="#3B82F6" fill="#DBEAFE" name="Forecasted Revenue" strokeDasharray="5 5" strokeWidth={2}/></AreaChart></ResponsiveContainer></div><div style={{background:'white',borderRadius:'0.5rem',boxShadow:'0 4px 6px rgba(0,0,0,0.1)',padding:'2rem',marginBottom:'1.5rem'}}><h2 style={{fontSize:'1.5rem',fontWeight:'bold',color:'#1f2937',marginBottom:'1rem'}}>Annual Performance Overview</h2><ResponsiveContainer width="100%" height={400}><BarChart data={annualData}><CartesianGrid strokeDasharray="3 3"/><XAxis dataKey="year"/><YAxis label={{value:'Amount ($M)',angle:-90,position:'insideLeft'}}/><Tooltip formatter={(value)=>`${value}M`}/><Legend/><Bar dataKey="revenue" fill="#DC2626" name="Revenue"/><Bar dataKey="operatingIncome" fill="#F59E0B" name="Operating Income"/><Bar dataKey="netIncome" fill="#10B981" name="Net Income"/></BarChart></ResponsiveContainer></div><div style={{background:'white',borderRadius:'0.5rem',boxShadow:'0 4px 6px rgba(0,0,0,0.1)',padding:'2rem',marginBottom:'1.5rem'}}><h2 style={{fontSize:'1.5rem',fontWeight:'bold',color:'#1f2937',marginBottom:'1rem'}}>Profitability Metrics Over Time</h2><ResponsiveContainer width="100%" height={400}><LineChart data={historicalData}><CartesianGrid strokeDasharray="3 3"/><XAxis dataKey="period" angle={-45} textAnchor="end" height={80} interval={15}/><YAxis label={{value:'Income ($M)',angle:-90,position:'insideLeft'}}/><Tooltip formatter={(value)=>`${value}M`}/><Legend/><Line type="monotone" dataKey="operatingIncome" stroke="#F59E0B" name="Operating Income" strokeWidth={2} dot={false}/><Line type="monotone" dataKey="netIncome" stroke="#10B981" name="Net Income" strokeWidth={2} dot={false}/></LineChart></ResponsiveContainer></div><div style={{background:'white',borderRadius:'0.5rem',boxShadow:'0 4px 6px rgba(0,0,0,0.1)',padding:'2rem'}}><h2 style={{fontSize:'1.5rem',fontWeight:'bold',color:'#1f2937',marginBottom:'1rem'}}>Key Insights</h2><div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))',gap:'1rem'}}><div style={{borderLeft:'4px solid #dc2626',paddingLeft:'1rem'}}><h3 style={{fontWeight:'600',color:'#1f2937',marginBottom:'0.5rem'}}>Long-Term Growth</h3><p style={{fontSize:'0.875rem',color:'#666'}}>Coca-Cola has demonstrated consistent growth with a {metrics.cagr}% CAGR over 30 years, showing resilience through multiple economic cycles including the 2008 financial crisis and 2020 pandemic.</p></div><div style={{borderLeft:'4px solid #2563eb',paddingLeft:'1rem'}}><h3 style={{fontWeight:'600',color:'#1f2937',marginBottom:'0.5rem'}}>Seasonal Patterns</h3><p style={{fontSize:'0.875rem',color:'#666'}}>Clear seasonality is evident with Q2 and Q3 (summer months) consistently outperforming Q1 and Q4, reflecting higher beverage consumption during warmer months.</p></div><div style={{borderLeft:'4px solid #16a34a',paddingLeft:'1rem'}}><h3 style={{fontWeight:'600',color:'#1f2937',marginBottom:'0.5rem'}}>Margin Improvement</h3><p style={{fontSize:'0.875rem',color:'#666'}}>Operating and net margins have gradually improved over the decades through operational efficiency, cost management, and portfolio optimization strategies.</p></div><div style={{borderLeft:'4px solid #9333ea',paddingLeft:'1rem'}}><h3 style={{fontWeight:'600',color:'#1f2937',marginBottom:'0.5rem'}}>Forecast Outlook</h3><p style={{fontSize:'0.875rem',color:'#666'}}>Based on recent trends, the forecast predicts continued moderate growth with seasonal variations. The model accounts for historical patterns and recent performance trajectory.</p></div></div></div></div></div>)};ReactDOM.render(<CocaColaAnalysis/>,document.getElementById('root'));</script></body></html>"""
+
+@app.route('/')
+def home():
+    return render_template_string(HOME_PAGE)
+
+@app.route('/analytics')
+def analytics():
+    return render_template_string(ANALYTICS_PAGE)
+
+@app.route('/coca-cola')
+def coca_cola():
+    return render_template_string(COCA_COLA_PAGE)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
