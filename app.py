@@ -325,7 +325,7 @@ def analytics():
 
 @app.route('/coca-cola')
 def coca_cola():
-    return send_file("static_pages/coca_cola.html")
+    return send_file("/coca_cola.html")
 
 
 if __name__ == '__main__':
