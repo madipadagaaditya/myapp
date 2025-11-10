@@ -1,5 +1,4 @@
-import os
-from flask import Flask, render_template_string, request, Response, send_file, send_from_directory
+from flask import Flask, render_template_string
 
 app = Flask(__name__)
 
@@ -332,24 +331,7 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
         .nav-links { display: flex; gap: 2rem; }
         .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s; }
         .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
-        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
-        .header { text-align: center; margin-bottom: 2rem; }
-        .header h1 { color: #dc2626; font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .header p { color: #666; font-size: 1.1rem; }
-        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-        .metric-card { background: white; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.5rem; border-left: 4px solid #dc2626; }
-        .metric-card h3 { font-size: 0.875rem; color: #666; margin-bottom: 0.5rem; }
-        .metric-card .value { font-size: 1.875rem; font-weight: bold; color: #1f2937; }
-        .metric-card .subtext { font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem; }
-        .chart-card { background: white; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 1.5rem; }
-        .chart-card h2 { font-size: 1.5rem; font-weight: bold; color: #1f2937; margin-bottom: 1rem; }
-        .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
-        .controls label { font-size: 0.875rem; color: #666; }
-        .controls select { border: 1px solid #d1d5db; border-radius: 0.25rem; padding: 0.5rem; }
-        .insights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
-        .insight-box { border-left: 4px solid #dc2626; padding-left: 1rem; }
-        .insight-box h3 { font-weight: 600; color: #1f2937; margin-bottom: 0.5rem; }
-        .insight-box p { font-size: 0.875rem; color: #666; }
+        #root { width: 100%; min-height: calc(100vh - 80px); }
     </style>
 </head>
 <body>
@@ -366,47 +348,40 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
     <div id="root"></div>
     <script type="text/babel">
         const { useState, useMemo } = React;
-        const { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } = Recharts;
+        const { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } = window.Recharts;
 
         function CocaColaAnalysis() {
             const [forecastYears, setForecastYears] = useState(2);
 
             const generateHistoricalData = () => {
                 const data = [];
-                const startYear = 1994;
-                const endYear = 2024;
                 const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
                 let baseRevenue = 4500;
 
-                for (let year = startYear; year <= endYear; year++) {
+                for (let year = 1994; year <= 2024; year++) {
                     for (let q = 0; q < 4; q++) {
-                        const quarter = quarters[q];
-                        let growthRate;
+                        let growthRate = 0.04;
                         if (year < 2000) growthRate = 0.045;
                         else if (year < 2008) growthRate = 0.055;
                         else if (year < 2010) growthRate = -0.02;
-                        else if (year < 2020) growthRate = 0.04;
                         else if (year === 2020) growthRate = -0.08;
-                        else growthRate = 0.06;
+                        else if (year > 2020) growthRate = 0.06;
 
                         const seasonality = [0.95, 1.08, 1.05, 0.92][q];
                         const variance = 1 + (Math.random() - 0.5) * 0.08;
                         baseRevenue *= (1 + growthRate / 4);
 
                         const revenue = baseRevenue * seasonality * variance;
-                        const operatingMargin = 0.18 + (year - startYear) * 0.002;
-                        const operatingIncome = revenue * operatingMargin * (1 + (Math.random() - 0.5) * 0.1);
-                        const netMargin = 0.14 + (year - startYear) * 0.0015;
-                        const netIncome = revenue * netMargin * (1 + (Math.random() - 0.5) * 0.12);
+                        const operatingIncome = revenue * (0.18 + (year - 1994) * 0.002) * (1 + (Math.random() - 0.5) * 0.1);
+                        const netIncome = revenue * (0.14 + (year - 1994) * 0.0015) * (1 + (Math.random() - 0.5) * 0.12);
 
                         data.push({
-                            period: `${year} ${quarter}`,
+                            period: `${year} ${quarters[q]}`,
                             year,
-                            quarter,
+                            quarter: quarters[q],
                             revenue: Math.round(revenue),
                             operatingIncome: Math.round(operatingIncome),
-                            netIncome: Math.round(netIncome),
-                            date: new Date(year, q * 3, 1)
+                            netIncome: Math.round(netIncome)
                         });
                     }
                 }
@@ -414,56 +389,6 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
             };
 
             const historicalData = useMemo(() => generateHistoricalData(), []);
-
-            const calculateTrend = (data, metric) => {
-                const n = data.length;
-                const sumX = data.reduce((sum, d, i) => sum + i, 0);
-                const sumY = data.reduce((sum, d) => sum + d[metric], 0);
-                const sumXY = data.reduce((sum, d, i) => sum + i * d[metric], 0);
-                const sumX2 = data.reduce((sum, d, i) => sum + i * i, 0);
-                const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-                const intercept = (sumY - slope * sumX) / n;
-                return { slope, intercept };
-            };
-
-            const generateForecast = () => {
-                const lastPoint = historicalData[historicalData.length - 1];
-                const recentData = historicalData.slice(-40);
-                const revenueTrend = calculateTrend(recentData, 'revenue');
-                const operatingTrend = calculateTrend(recentData, 'operatingIncome');
-                const netTrend = calculateTrend(recentData, 'netIncome');
-
-                const forecast = [];
-                const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-                const seasonality = [0.95, 1.08, 1.05, 0.92];
-
-                for (let i = 1; i <= forecastYears * 4; i++) {
-                    const year = lastPoint.year + Math.floor((parseInt(lastPoint.quarter.charAt(1)) - 1 + i) / 4);
-                    const q = ((parseInt(lastPoint.quarter.charAt(1)) - 1 + i) % 4);
-                    const quarter = quarters[q];
-
-                    const baseRevenue = revenueTrend.slope * (historicalData.length + i) + revenueTrend.intercept;
-                    const revenue = baseRevenue * seasonality[q];
-                    const baseOperating = operatingTrend.slope * (historicalData.length + i) + operatingTrend.intercept;
-                    const operatingIncome = baseOperating * seasonality[q];
-                    const baseNet = netTrend.slope * (historicalData.length + i) + netTrend.intercept;
-                    const netIncome = baseNet * seasonality[q];
-
-                    forecast.push({
-                        period: `${year} ${quarter}`,
-                        year,
-                        quarter,
-                        revenue: Math.round(revenue),
-                        operatingIncome: Math.round(operatingIncome),
-                        netIncome: Math.round(netIncome),
-                        isForecast: true
-                    });
-                }
-                return forecast;
-            };
-
-            const forecastData = useMemo(() => generateForecast(), [forecastYears]);
-            const combinedData = [...historicalData, ...forecastData];
 
             const metrics = useMemo(() => {
                 const recent = historicalData.slice(-4);
@@ -500,61 +425,50 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
             return (
                 <div style={{ width: '100%', background: 'linear-gradient(to bottom right, #fef2f2, white)', padding: '1.5rem', minHeight: '100vh' }}>
                     <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                        <div className="header">
-                            <h1>Coca-Cola Financial Analysis</h1>
-                            <p>30 Years of Quarterly Performance (1994-2024) with Forecasting</p>
+                        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#dc2626', marginBottom: '0.5rem' }}>Coca-Cola Financial Analysis</h1>
+                            <p style={{ color: '#666' }}>30 Years of Quarterly Performance (1994-2024)</p>
                         </div>
 
-                        <div className="metrics-grid">
-                            <div className="metric-card">
-                                <h3>Annual Revenue</h3>
-                                <div className="value">${metrics.currentRevenue}B</div>
-                                <div className="subtext">+{metrics.revenueGrowth}% YoY</div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+                            <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #dc2626' }}>
+                                <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Annual Revenue</div>
+                                <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>${metrics.currentRevenue}B</p>
+                                <p style={{ fontSize: '0.875rem', color: '#16a34a' }}>+{metrics.revenueGrowth}% YoY</p>
                             </div>
-                            <div className="metric-card" style={{ borderLeftColor: '#2563eb' }}>
-                                <h3>30-Year CAGR</h3>
-                                <div className="value">{metrics.cagr}%</div>
-                                <div className="subtext">Compound Annual Growth</div>
+                            <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #2563eb' }}>
+                                <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>30-Year CAGR</div>
+                                <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.cagr}%</p>
+                                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Compound Annual Growth</p>
                             </div>
-                            <div className="metric-card" style={{ borderLeftColor: '#16a34a' }}>
-                                <h3>Net Margin</h3>
-                                <div className="value">{metrics.avgMargin}%</div>
-                                <div className="subtext">Last 4 Quarters</div>
+                            <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #16a34a' }}>
+                                <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Net Margin</div>
+                                <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.avgMargin}%</p>
+                                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Last 4 Quarters</p>
                             </div>
-                            <div className="metric-card" style={{ borderLeftColor: '#9333ea' }}>
-                                <h3>Data Points</h3>
-                                <div className="value">{metrics.totalQuarters}</div>
-                                <div className="subtext">Quarters Analyzed</div>
+                            <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #9333ea' }}>
+                                <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Data Points</div>
+                                <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.totalQuarters}</p>
+                                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Quarters Analyzed</p>
                             </div>
                         </div>
 
-                        <div className="chart-card">
-                            <div className="controls">
-                                <h2>Quarterly Revenue Trend & Forecast</h2>
-                                <div>
-                                    <label>Forecast Years: </label>
-                                    <select value={forecastYears} onChange={(e) => setForecastYears(Number(e.target.value))}>
-                                        <option value={1}>1 Year</option>
-                                        <option value={2}>2 Years</option>
-                                        <option value={3}>3 Years</option>
-                                        <option value={5}>5 Years</option>
-                                    </select>
-                                </div>
-                            </div>
+                        <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Quarterly Revenue Trend</h2>
                             <ResponsiveContainer width="100%" height={400}>
-                                <AreaChart data={combinedData}>
+                                <LineChart data={historicalData}>
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="period" interval={15} />
                                     <YAxis label={{ value: 'Revenue ($M)', angle: -90, position: 'insideLeft' }} />
                                     <Tooltip formatter={(value) => `${value}M`} />
                                     <Legend />
-                                    <Area type="monotone" dataKey="revenue" stroke="#DC2626" fill="#FEE2E2" name="Revenue" strokeWidth={2} />
-                                </AreaChart>
+                                    <Line type="monotone" dataKey="revenue" stroke="#DC2626" name="Revenue" strokeWidth={2} dot={false} />
+                                </LineChart>
                             </ResponsiveContainer>
                         </div>
 
-                        <div className="chart-card">
-                            <h2>Annual Performance Overview</h2>
+                        <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Annual Performance Overview</h2>
                             <ResponsiveContainer width="100%" height={400}>
                                 <BarChart data={annualData}>
                                     <CartesianGrid strokeDasharray="3 3" />
@@ -569,8 +483,8 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
                             </ResponsiveContainer>
                         </div>
 
-                        <div className="chart-card">
-                            <h2>Profitability Metrics Over Time</h2>
+                        <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Profitability Metrics</h2>
                             <ResponsiveContainer width="100%" height={400}>
                                 <LineChart data={historicalData}>
                                     <CartesianGrid strokeDasharray="3 3" />
@@ -584,24 +498,24 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
                             </ResponsiveContainer>
                         </div>
 
-                        <div className="chart-card">
-                            <h2>Key Insights</h2>
-                            <div className="insights-grid">
-                                <div className="insight-box">
-                                    <h3>Long-Term Growth</h3>
-                                    <p>Coca-Cola has demonstrated consistent growth with a {metrics.cagr}% CAGR over 30 years, showing resilience through multiple economic cycles including the 2008 financial crisis and 2020 pandemic.</p>
+                        <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem' }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Key Insights</h2>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+                                <div style={{ borderLeft: '4px solid #dc2626', paddingLeft: '1rem' }}>
+                                    <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Long-Term Growth</h3>
+                                    <p style={{ fontSize: '0.875rem', color: '#666' }}>Coca-Cola has demonstrated consistent growth with a {metrics.cagr}% CAGR over 30 years, showing resilience through economic cycles.</p>
                                 </div>
-                                <div className="insight-box" style={{ borderLeftColor: '#2563eb' }}>
-                                    <h3>Seasonal Patterns</h3>
-                                    <p>Clear seasonality is evident with Q2 and Q3 (summer months) consistently outperforming Q1 and Q4, reflecting higher beverage consumption during warmer months.</p>
+                                <div style={{ borderLeft: '4px solid #2563eb', paddingLeft: '1rem' }}>
+                                    <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Seasonal Patterns</h3>
+                                    <p style={{ fontSize: '0.875rem', color: '#666' }}>Clear seasonality with Q2 and Q3 (summer months) consistently outperforming, reflecting higher beverage consumption during warmer months.</p>
                                 </div>
-                                <div className="insight-box" style={{ borderLeftColor: '#16a34a' }}>
-                                    <h3>Margin Improvement</h3>
-                                    <p>Operating and net margins have gradually improved over the decades through operational efficiency, cost management, and portfolio optimization strategies.</p>
+                                <div style={{ borderLeft: '4px solid #16a34a', paddingLeft: '1rem' }}>
+                                    <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Margin Improvement</h3>
+                                    <p style={{ fontSize: '0.875rem', color: '#666' }}>Operating and net margins have gradually improved through operational efficiency and cost management strategies.</p>
                                 </div>
-                                <div className="insight-box" style={{ borderLeftColor: '#9333ea' }}>
-                                    <h3>Forecast Outlook</h3>
-                                    <p>Based on recent trends, the forecast predicts continued moderate growth with seasonal variations. The model accounts for historical patterns and recent performance trajectory.</p>
+                                <div style={{ borderLeft: '4px solid #9333ea', paddingLeft: '1rem' }}>
+                                    <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Financial Performance</h3>
+                                    <p style={{ fontSize: '0.875rem', color: '#666' }}>Current net margin of {metrics.avgMargin}% demonstrates strong profitability and operational excellence in recent quarters.</p>
                                 </div>
                             </div>
                         </div>
@@ -610,8 +524,22 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
             );
         }
 
-        ReactDOM.render(<CocaColaAnalysis />, document.getElementById('root'));
     </script>
 </body>
 </html>
 """
+
+@app.route('/')
+def home():
+    return render_template_string(HOME_PAGE)
+
+@app.route('/analytics')
+def analytics():
+    return render_template_string(ANALYTICS_PAGE)
+
+@app.route('/coca-cola')
+def coca_cola():
+    return render_template_string(COCA_COLA_PAGE)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True)
