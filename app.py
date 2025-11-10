@@ -2,7 +2,6 @@ from flask import Flask, render_template_string
 
 app = Flask(__name__)
 
-# Home page with resume
 HOME_PAGE = """
 <!DOCTYPE html>
 <html>
@@ -41,7 +40,6 @@ HOME_PAGE = """
         .skill-category li:before { content: "▸ "; color: #1e3c72; font-weight: bold; }
         .honors-section { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #1e3c72; }
         .honors-section p { margin-bottom: 0.5rem; line-height: 1.8; }
-        .honors-section strong { color: #1e3c72; }
         @media (max-width: 768px) {
             .nav-links { gap: 0.5rem; }
             .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
@@ -223,22 +221,15 @@ ANALYTICS_PAGE = """
         .bar { display: flex; align-items: center; margin-bottom: 1rem; }
         .bar-label { width: 150px; font-weight: 500; color: #333; }
         .bar-container { flex: 1; background: #e0e0e0; border-radius: 10px; height: 30px; position: relative; overflow: hidden; }
-        .bar-fill { height: 100%; background: linear-gradient(90deg, #1e3c72, #2a5298); border-radius: 10px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-weight: bold; font-size: 0.9rem; transition: width 1s ease; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, #1e3c72, #2a5298); border-radius: 10px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-weight: bold; font-size: 0.9rem; }
         .timeline { position: relative; padding: 2rem 0; }
-        .timeline-item { display: flex; gap: 2rem; margin-bottom: 2rem; position: relative; }
+        .timeline-item { display: flex; gap: 2rem; margin-bottom: 2rem; }
         .timeline-date { min-width: 120px; font-weight: 600; color: #1e3c72; }
         .timeline-content { flex: 1; background: #f9f9f9; padding: 1.5rem; border-radius: 8px; border-left: 3px solid #1e3c72; }
-        .timeline-content h4 { color: #1e3c72; margin-bottom: 0.5rem; }
-        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
         .metric-card { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 2rem; border-radius: 10px; text-align: center; }
         .metric-value { font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; }
         .metric-label { font-size: 1rem; opacity: 0.9; }
-        @media (max-width: 768px) {
-            .nav-links { gap: 0.5rem; }
-            .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
-            .bar-label { width: 100px; font-size: 0.9rem; }
-            .timeline-item { flex-direction: column; gap: 0.5rem; }
-        }
     </style>
 </head>
 <body>
@@ -267,15 +258,15 @@ ANALYTICS_PAGE = """
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-date">Jun - Aug 2025</div>
-                    <div class="timeline-content"><h4>Muffins AI</h4><p>Sales Operations Analyst Intern</p><p style="margin-top: 0.5rem; color: #666;">Led data analysis initiatives improving sales efficiency by 50%</p></div>
+                    <div class="timeline-content"><h4>Muffins AI</h4><p>Sales Operations Analyst Intern</p></div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">Apr - May 2025</div>
-                    <div class="timeline-content"><h4>Loyola University</h4><p>Case Study Analyst (Coca-Cola & PepsiCo)</p><p style="margin-top: 0.5rem; color: #666;">Financial analysis and predictive modeling projects</p></div>
+                    <div class="timeline-content"><h4>Loyola University</h4><p>Case Study Analyst</p></div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">Jun - Sep 2024</div>
-                    <div class="timeline-content"><h4>GAC Solutions</h4><p>Data Analyst Intern</p><p style="margin-top: 0.5rem; color: #666;">SEO optimization and digital marketing analytics</p></div>
+                    <div class="timeline-content"><h4>GAC Solutions</h4><p>Data Analyst Intern</p></div>
                 </div>
             </div>
         </div>
@@ -286,26 +277,6 @@ ANALYTICS_PAGE = """
                 <div class="bar"><div class="bar-label">Power BI</div><div class="bar-container"><div class="bar-fill" style="width: 90%;">90%</div></div></div>
                 <div class="bar"><div class="bar-label">SQL</div><div class="bar-container"><div class="bar-fill" style="width: 85%;">85%</div></div></div>
                 <div class="bar"><div class="bar-label">Python</div><div class="bar-container"><div class="bar-fill" style="width: 80%;">80%</div></div></div>
-                <div class="bar"><div class="bar-label">Tableau</div><div class="bar-container"><div class="bar-fill" style="width: 85%;">85%</div></div></div>
-                <div class="bar"><div class="bar-label">Statistical Analysis</div><div class="bar-container"><div class="bar-fill" style="width: 88%;">88%</div></div></div>
-            </div>
-        </div>
-        <div class="chart-container">
-            <h3>📈 Data Analysis Projects - Scale & Impact</h3>
-            <div class="bar-chart">
-                <div class="bar"><div class="bar-label">Muffins AI</div><div class="bar-container"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #16a085, #27ae60);">250+ Tables</div></div></div>
-                <div class="bar"><div class="bar-label">Coca-Cola Study</div><div class="bar-container"><div class="bar-fill" style="width: 70%; background: linear-gradient(90deg, #2980b9, #3498db);">30 Years Data</div></div></div>
-                <div class="bar"><div class="bar-label">PepsiCo Study</div><div class="bar-container"><div class="bar-fill" style="width: 65%; background: linear-gradient(90deg, #8e44ad, #9b59b6);">7 Key Ratios</div></div></div>
-                <div class="bar"><div class="bar-label">GAC Solutions</div><div class="bar-container"><div class="bar-fill" style="width: 60%; background: linear-gradient(90deg, #d35400, #e67e22);">Web Analytics</div></div></div>
-            </div>
-        </div>
-        <div class="chart-container">
-            <h3>🤝 Community Impact</h3>
-            <div class="metric-grid">
-                <div class="metric-card" style="background: linear-gradient(135deg, #16a085, #27ae60);"><div class="metric-value">$1,000</div><div class="metric-label">Raised for Charity</div></div>
-                <div class="metric-card" style="background: linear-gradient(135deg, #2980b9, #3498db);"><div class="metric-value">200+</div><div class="metric-label">Food Items Collected</div></div>
-                <div class="metric-card" style="background: linear-gradient(135deg, #8e44ad, #9b59b6);"><div class="metric-value">100+</div><div class="metric-label">School Supplies Donated</div></div>
-                <div class="metric-card" style="background: linear-gradient(135deg, #d35400, #e67e22);"><div class="metric-value">8 Hours</div><div class="metric-label">Eagle Scout Project</div></div>
             </div>
         </div>
     </div>
@@ -322,13 +293,21 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; }
-        .navbar { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .navbar { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; }
         .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
         .nav-brand { color: white; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
         .nav-links { display: flex; gap: 2rem; }
-        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s; }
-        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
-        #root { width: 100%; min-height: calc(100vh - 80px); }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; }
+        .nav-links a.active { background: rgba(255,255,255,0.2); }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .header { text-align: center; margin-bottom: 2rem; }
+        .header h1 { color: #dc2626; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .metric-card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 1.5rem; border-left: 4px solid #dc2626; }
+        .metric-card .value { font-size: 1.875rem; font-weight: bold; color: #1f2937; }
+        .chart-card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 1.5rem; }
+        .chart-card h2 { font-size: 1.5rem; font-weight: bold; color: #1f2937; margin-bottom: 1rem; }
+        .chart-wrapper { position: relative; height: 400px; }
     </style>
 </head>
 <body>
@@ -342,183 +321,197 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
             </div>
         </div>
     </nav>
-    <div id="root"></div>
-    <script type="text/babel">
-        const { useState, useMemo } = React;
-        const { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } = window.Recharts;
-            const [forecastYears, setForecastYears] = useState(2);
+    
+    <div class="container">
+        <div class="header">
+            <h1>Coca-Cola Financial Analysis</h1>
+            <p>30 Years of Quarterly Performance (1994-2024)</p>
+        </div>
 
-            const generateHistoricalData = () => {
-                const data = [];
-                const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-                let baseRevenue = 4500;
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div style="color: #666; margin-bottom: 0.5rem;">Annual Revenue</div>
+                <div class="value" id="revenue">$0B</div>
+            </div>
+            <div class="metric-card" style="border-left-color: #2563eb;">
+                <div style="color: #666; margin-bottom: 0.5rem;">30-Year CAGR</div>
+                <div class="value" id="cagr">0%</div>
+            </div>
+            <div class="metric-card" style="border-left-color: #16a34a;">
+                <div style="color: #666; margin-bottom: 0.5rem;">Net Margin</div>
+                <div class="value" id="margin">0%</div>
+            </div>
+            <div class="metric-card" style="border-left-color: #9333ea;">
+                <div style="color: #666; margin-bottom: 0.5rem;">Data Points</div>
+                <div class="value" id="quarters">0</div>
+            </div>
+        </div>
 
-                for (let year = 1994; year <= 2024; year++) {
-                    for (let q = 0; q < 4; q++) {
-                        let growthRate = 0.04;
-                        if (year < 2000) growthRate = 0.045;
-                        else if (year < 2008) growthRate = 0.055;
-                        else if (year < 2010) growthRate = -0.02;
-                        else if (year === 2020) growthRate = -0.08;
-                        else if (year > 2020) growthRate = 0.06;
+        <div class="chart-card">
+            <h2>Quarterly Revenue Trend</h2>
+            <div class="chart-wrapper">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
 
-                        const seasonality = [0.95, 1.08, 1.05, 0.92][q];
-                        const variance = 1 + (Math.random() - 0.5) * 0.08;
-                        baseRevenue *= (1 + growthRate / 4);
+        <div class="chart-card">
+            <h2>Annual Performance Overview</h2>
+            <div class="chart-wrapper">
+                <canvas id="annualChart"></canvas>
+            </div>
+        </div>
 
-                        const revenue = baseRevenue * seasonality * variance;
-                        const operatingIncome = revenue * (0.18 + (year - 1994) * 0.002) * (1 + (Math.random() - 0.5) * 0.1);
-                        const netIncome = revenue * (0.14 + (year - 1994) * 0.0015) * (1 + (Math.random() - 0.5) * 0.12);
+        <div class="chart-card">
+            <h2>Profitability Metrics</h2>
+            <div class="chart-wrapper">
+                <canvas id="profitChart"></canvas>
+            </div>
+        </div>
+    </div>
 
-                        data.push({
-                            period: `${year} ${quarters[q]}`,
-                            year,
-                            quarter: quarters[q],
-                            revenue: Math.round(revenue),
-                            operatingIncome: Math.round(operatingIncome),
-                            netIncome: Math.round(netIncome)
-                        });
-                    }
+    <script>
+        const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+        let historicalData = [];
+
+        function generateHistoricalData() {
+            let baseRevenue = 4500;
+            const data = [];
+
+            for (let year = 1994; year <= 2024; year++) {
+                for (let q = 0; q < 4; q++) {
+                    let growthRate = 0.04;
+                    if (year < 2000) growthRate = 0.045;
+                    else if (year < 2008) growthRate = 0.055;
+                    else if (year < 2010) growthRate = -0.02;
+                    else if (year === 2020) growthRate = -0.08;
+                    else if (year > 2020) growthRate = 0.06;
+
+                    const seasonality = [0.95, 1.08, 1.05, 0.92][q];
+                    const variance = 1 + (Math.random() - 0.5) * 0.08;
+                    baseRevenue *= (1 + growthRate / 4);
+
+                    const revenue = baseRevenue * seasonality * variance;
+                    const operatingIncome = revenue * (0.18 + (year - 1994) * 0.002);
+                    const netIncome = revenue * (0.14 + (year - 1994) * 0.0015);
+
+                    data.push({
+                        period: `${year} ${quarters[q]}`,
+                        year,
+                        quarter: quarters[q],
+                        revenue: Math.round(revenue),
+                        operatingIncome: Math.round(operatingIncome),
+                        netIncome: Math.round(netIncome)
+                    });
                 }
-                return data;
-            };
-
-            const historicalData = useMemo(() => generateHistoricalData(), []);
-
-            const metrics = useMemo(() => {
-                const recent = historicalData.slice(-4);
-                const previousYear = historicalData.slice(-8, -4);
-                const currentRevenue = recent.reduce((sum, d) => sum + d.revenue, 0);
-                const previousRevenue = previousYear.reduce((sum, d) => sum + d.revenue, 0);
-                const revenueGrowth = ((currentRevenue - previousRevenue) / previousRevenue * 100).toFixed(2);
-                const avgMargin = (recent.reduce((sum, d) => sum + (d.netIncome / d.revenue), 0) / 4 * 100).toFixed(2);
-                const first = historicalData[0];
-                const last = historicalData[historicalData.length - 1];
-                const cagr = (Math.pow(last.revenue / first.revenue, 1 / 30) - 1) * 100;
-                return {
-                    currentRevenue: (currentRevenue / 1000).toFixed(2),
-                    revenueGrowth,
-                    avgMargin,
-                    cagr: cagr.toFixed(2),
-                    totalQuarters: historicalData.length
-                };
-            }, [historicalData]);
-
-            const annualData = useMemo(() => {
-                const annual = {};
-                historicalData.forEach(d => {
-                    if (!annual[d.year]) {
-                        annual[d.year] = { year: d.year, revenue: 0, operatingIncome: 0, netIncome: 0 };
-                    }
-                    annual[d.year].revenue += d.revenue;
-                    annual[d.year].operatingIncome += d.operatingIncome;
-                    annual[d.year].netIncome += d.netIncome;
-                });
-                return Object.values(annual);
-            }, [historicalData]);
-
-            return (
-                <div style={{ width: '100%', background: 'linear-gradient(to bottom right, #fef2f2, white)', padding: '1.5rem', minHeight: '100vh' }}>
-                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#dc2626', marginBottom: '0.5rem' }}>Coca-Cola Financial Analysis</h1>
-                            <p style={{ color: '#666' }}>30 Years of Quarterly Performance (1994-2024)</p>
-                        </div>
-
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-                            <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #dc2626' }}>
-                                <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Annual Revenue</div>
-                                <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>${metrics.currentRevenue}B</p>
-                                <p style={{ fontSize: '0.875rem', color: '#16a34a' }}>+{metrics.revenueGrowth}% YoY</p>
-                            </div>
-                            <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #2563eb' }}>
-                                <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>30-Year CAGR</div>
-                                <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.cagr}%</p>
-                                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Compound Annual Growth</p>
-                            </div>
-                            <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #16a34a' }}>
-                                <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Net Margin</div>
-                                <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.avgMargin}%</p>
-                                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Last 4 Quarters</p>
-                            </div>
-                            <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '1.5rem', borderLeft: '4px solid #9333ea' }}>
-                                <div style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem' }}>Data Points</div>
-                                <p style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#1f2937' }}>{metrics.totalQuarters}</p>
-                                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Quarters Analyzed</p>
-                            </div>
-                        </div>
-
-                        <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Quarterly Revenue Trend</h2>
-                            <ResponsiveContainer width="100%" height={400}>
-                                <LineChart data={historicalData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="period" interval={15} />
-                                    <YAxis label={{ value: 'Revenue ($M)', angle: -90, position: 'insideLeft' }} />
-                                    <Tooltip formatter={(value) => `${value}M`} />
-                                    <Legend />
-                                    <Line type="monotone" dataKey="revenue" stroke="#DC2626" name="Revenue" strokeWidth={2} dot={false} />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-
-                        <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Annual Performance Overview</h2>
-                            <ResponsiveContainer width="100%" height={400}>
-                                <BarChart data={annualData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="year" />
-                                    <YAxis label={{ value: 'Amount ($M)', angle: -90, position: 'insideLeft' }} />
-                                    <Tooltip formatter={(value) => `${value}M`} />
-                                    <Legend />
-                                    <Bar dataKey="revenue" fill="#DC2626" name="Revenue" />
-                                    <Bar dataKey="operatingIncome" fill="#F59E0B" name="Operating Income" />
-                                    <Bar dataKey="netIncome" fill="#10B981" name="Net Income" />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </div>
-
-                        <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Profitability Metrics</h2>
-                            <ResponsiveContainer width="100%" height={400}>
-                                <LineChart data={historicalData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="period" interval={15} />
-                                    <YAxis label={{ value: 'Income ($M)', angle: -90, position: 'insideLeft' }} />
-                                    <Tooltip formatter={(value) => `${value}M`} />
-                                    <Legend />
-                                    <Line type="monotone" dataKey="operatingIncome" stroke="#F59E0B" name="Operating Income" strokeWidth={2} dot={false} />
-                                    <Line type="monotone" dataKey="netIncome" stroke="#10B981" name="Net Income" strokeWidth={2} dot={false} />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-
-                        <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '2rem' }}>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Key Insights</h2>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
-                                <div style={{ borderLeft: '4px solid #dc2626', paddingLeft: '1rem' }}>
-                                    <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Long-Term Growth</h3>
-                                    <p style={{ fontSize: '0.875rem', color: '#666' }}>Coca-Cola has demonstrated consistent growth with a {metrics.cagr}% CAGR over 30 years, showing resilience through economic cycles.</p>
-                                </div>
-                                <div style={{ borderLeft: '4px solid #2563eb', paddingLeft: '1rem' }}>
-                                    <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Seasonal Patterns</h3>
-                                    <p style={{ fontSize: '0.875rem', color: '#666' }}>Clear seasonality with Q2 and Q3 (summer months) consistently outperforming, reflecting higher beverage consumption during warmer months.</p>
-                                </div>
-                                <div style={{ borderLeft: '4px solid #16a34a', paddingLeft: '1rem' }}>
-                                    <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Margin Improvement</h3>
-                                    <p style={{ fontSize: '0.875rem', color: '#666' }}>Operating and net margins have gradually improved through operational efficiency and cost management strategies.</p>
-                                </div>
-                                <div style={{ borderLeft: '4px solid #9333ea', paddingLeft: '1rem' }}>
-                                    <h3 style={{ fontWeight: '600', color: '#1f2937', marginBottom: '0.5rem' }}>Financial Performance</h3>
-                                    <p style={{ fontSize: '0.875rem', color: '#666' }}>Current net margin of {metrics.avgMargin}% demonstrates strong profitability and operational excellence in recent quarters.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
+            }
+            return data;
         }
 
+        function updateMetrics() {
+            const recent = historicalData.slice(-4);
+            const previousYear = historicalData.slice(-8, -4);
+            const currentRevenue = recent.reduce((sum, d) => sum + d.revenue, 0);
+            const previousRevenue = previousYear.reduce((sum, d) => sum + d.revenue, 0);
+            const avgMargin = (recent.reduce((sum, d) => sum + (d.netIncome / d.revenue), 0) / 4 * 100).toFixed(2);
+            const first = historicalData[0];
+            const last = historicalData[historicalData.length - 1];
+            const cagr = (Math.pow(last.revenue / first.revenue, 1 / 30) - 1) * 100;
+
+            document.getElementById('revenue').textContent = '$' + (currentRevenue / 1000).toFixed(2) + 'B';
+            document.getElementById('cagr').textContent = cagr.toFixed(2) + '%';
+            document.getElementById('margin').textContent = avgMargin + '%';
+            document.getElementById('quarters').textContent = historicalData.length;
+        }
+
+        function getAnnualData() {
+            const annual = {};
+            historicalData.forEach(d => {
+                if (!annual[d.year]) {
+                    annual[d.year] = { year: d.year, revenue: 0, operatingIncome: 0, netIncome: 0 };
+                }
+                annual[d.year].revenue += d.revenue;
+                annual[d.year].operatingIncome += d.operatingIncome;
+                annual[d.year].netIncome += d.netIncome;
+            });
+            return Object.values(annual);
+        }
+
+        function createCharts() {
+            const annualData = getAnnualData();
+
+            new Chart(document.getElementById('revenueChart'), {
+                type: 'line',
+                data: {
+                    labels: historicalData.map(d => d.period),
+                    datasets: [{
+                        label: 'Revenue ($M)',
+                        data: historicalData.map(d => d.revenue),
+                        borderColor: '#DC2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: true } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            new Chart(document.getElementById('annualChart'), {
+                type: 'bar',
+                data: {
+                    labels: annualData.map(d => d.year),
+                    datasets: [
+                        { label: 'Revenue', data: annualData.map(d => d.revenue), backgroundColor: '#DC2626' },
+                        { label: 'Operating Income', data: annualData.map(d => d.operatingIncome), backgroundColor: '#F59E0B' },
+                        { label: 'Net Income', data: annualData.map(d => d.netIncome), backgroundColor: '#10B981' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: true } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            new Chart(document.getElementById('profitChart'), {
+                type: 'line',
+                data: {
+                    labels: historicalData.map(d => d.period),
+                    datasets: [
+                        {
+                            label: 'Operating Income ($M)',
+                            data: historicalData.map(d => d.operatingIncome),
+                            borderColor: '#F59E0B',
+                            tension: 0.3,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Net Income ($M)',
+                            data: historicalData.map(d => d.netIncome),
+                            borderColor: '#10B981',
+                            tension: 0.3,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: true } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        historicalData = generateHistoricalData();
+        updateMetrics();
+        createCharts();
     </script>
 </body>
 </html>
@@ -534,7 +527,7 @@ def analytics():
 
 @app.route('/coca-cola')
 def coca_cola():
-    return COCA_COLA_JS_PAGE
+    return COCA_COLA_PAGE
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
