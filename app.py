@@ -318,10 +318,7 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
 <head>
     <title>Coca-Cola Analysis</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.10.3/Recharts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; }
@@ -349,8 +346,6 @@ COCA_COLA_PAGE = """<!DOCTYPE html>
     <script type="text/babel">
         const { useState, useMemo } = React;
         const { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } = window.Recharts;
-
-        function CocaColaAnalysis() {
             const [forecastYears, setForecastYears] = useState(2);
 
             const generateHistoricalData = () => {
@@ -539,7 +534,7 @@ def analytics():
 
 @app.route('/coca-cola')
 def coca_cola():
-    return COCA_COLA_PAGE
+    return COCA_COLA_JS_PAGE
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
