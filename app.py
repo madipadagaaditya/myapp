@@ -539,7 +539,7 @@ def analytics():
 
 @app.route('/coca-cola')
 def coca_cola():
-    return render_template_string(COCA_COLA_PAGE)
+    return COCA_COLA_PAGE
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
